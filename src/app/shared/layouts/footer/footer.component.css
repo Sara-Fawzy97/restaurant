@@ -1,0 +1,11 @@
+footer{
+    background: url(/assets/footer-bg.png) no-repeat;
+    background-size: 100% 100%;
+}
+.citiesDiv h3:after, .dishesDiv h3:after{
+    content: "";
+    background-color: #ed3c0b;
+    width: 40px;
+    display: block;
+    height:2px;
+}
