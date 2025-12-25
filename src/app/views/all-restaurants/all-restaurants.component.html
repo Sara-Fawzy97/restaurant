@@ -1,0 +1,59 @@
+<section class="container mx-auto px-4 py-8">
+  <div class="mb-8">
+    <h1 class="text-4xl font-bold text-gray-800 mb-2">All Restaurants</h1>
+    <p class="text-gray-600">Discover all available restaurants</p>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="text-center py-12">
+    <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-[#ed3c0b]"></div>
+    <p class="mt-4 text-gray-600">Loading restaurants...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error && !loading" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+    <p>{{ error }}</p>
+  </div>
+
+  <!-- Restaurants Grid -->
+  <div *ngIf="!loading && !error" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div *ngFor="let restaurant of restaurants" 
+         class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
+      <div class="p-6">
+        <h3 class="text-xl font-semibold text-gray-800 mb-2">{{ restaurant.restaurantName }}</h3>
+        
+        <div class="space-y-2 text-gray-600">
+          <p *ngIf="restaurant.address" class="flex items-center">
+            <i class="fa-solid fa-location-dot mr-2 text-[#ed3c0b]"></i>
+            {{ restaurant.address }}
+          </p>
+          
+          <p *ngIf="restaurant.type" class="flex items-center">
+            <i class="fa-solid fa-utensils mr-2 text-[#ed3c0b]"></i>
+            {{ restaurant.type }}
+          </p>
+          
+          <p *ngIf="restaurant.parkingLot !== undefined" class="flex items-center">
+            <i class="fa-solid fa-car mr-2 text-[#ed3c0b]"></i>
+            <span [class.text-green-600]="restaurant.parkingLot" [class.text-red-600]="!restaurant.parkingLot">
+              {{ restaurant.parkingLot ? 'Parking Available' : 'No Parking' }}
+            </span>
+          </p>
+        </div>
+
+        <div class="mt-4 pt-4 border-t border-gray-200">
+          <button class="w-full bg-[#ed3c0b] text-white px-4 py-2 rounded-md hover:bg-[#d6340a] transition-colors">
+            View Details
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!loading && !error && restaurants.length === 0" class="text-center py-12">
+    <i class="fa-solid fa-store text-6xl text-gray-300 mb-4"></i>
+    <p class="text-xl text-gray-600">No restaurants found</p>
+  </div>
+</section>
+
