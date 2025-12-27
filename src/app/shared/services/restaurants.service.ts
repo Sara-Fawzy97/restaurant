@@ -25,6 +25,9 @@ export class RestaurantsService {
     return this.http.get<Restaurant[]>(this.apiUrl);
   }
 
+  // getRestaurantsByAddress():Observable<Restaurants[]>{
+
+  // }
   /**
    * Get a restaurant by ID
    */

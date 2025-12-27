@@ -12,10 +12,10 @@
               class="block w-full py-1.5 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6" />
 
           </div>
-          <div class="grid shrink-0 grid-cols-1 focus-within:relative">
-            <select id="country" name="country" aria-label="country"
+          <div  class="grid shrink-0 grid-cols-1 focus-within:relative">
+            <select  id="country" name="country" aria-label="country"
               class="col-start-1 bg-gray-100 row-start-1 w-full h-full font-medium appearance-none rounded-r-md py-1.5 pr-7 pl-3 text-base text-gray-500 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2  sm:text-sm/6">
-              <option>Cairo</option>
+               <option *ngFor='let adress of addresses'  >{{adress.address}}</option>
               <option>CAD</option>
               <option>EUR</option>
             </select>
