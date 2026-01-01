@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RestaurantsService, Restaurant } from '../../shared/services/restaurants.service';
+import { RestaurantsService} from '../../shared/services/restaurants.service';
+import { Restaurant } from '../../interfaces/Restaurant';
 
 @Component({
   selector: 'app-all-restaurants',

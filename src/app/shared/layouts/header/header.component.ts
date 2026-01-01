@@ -53,17 +53,18 @@ export class HeaderComponent {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DialogContentExampleDialog {
+  readonly dialog = inject(MatDialog);
 
-  // @Input() greetSignUpFunction!:()=>void;
-  constructor(private headerComp:HeaderComponent){}
+  openDialogSignup() {
+    const dialogRef = this.dialog.open(DialogContentExampleDialogSignup);
 
-  ngInit(){
-    this.headerComp.openDialogSignup()
-
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
   }
 }
 
-
+////////////////////////** */
 
 @Component({
   selector: 'dialog-content-example-dialogSignup',
@@ -73,11 +74,14 @@ export class DialogContentExampleDialog {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DialogContentExampleDialogSignup {
+ 
+  readonly dialog = inject(MatDialog);
+  openDialog() {
+    const dialogRef = this.dialog.open(DialogContentExampleDialog);
 
-  constructor(private headerComp:HeaderComponent){}
-
-  ngInit(){
-    this.headerComp.openDialog()
-
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
   }
+
 }

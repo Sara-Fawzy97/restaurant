@@ -1,8 +1,9 @@
 import { Component,OnInit } from '@angular/core';
 import { RouterLink } from "@angular/router";
 import { CommonModule } from '@angular/common';
+import { Restaurant } from '../../interfaces/Restaurant';
 
-import {RestaurantsService,Restaurant} from '../../shared/services/restaurants.service';
+import {RestaurantsService} from '../../shared/services/restaurants.service';
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -13,7 +14,10 @@ import {RestaurantsService,Restaurant} from '../../shared/services/restaurants.s
 })
 export class HomeComponent {
 
-addresses:Restaurant[]=[]
+addresses:any[]=[]
+addressesArray:any
+splitedAdresses:any[]=[]
+uniuqeAddresses:any[]=[]
   constructor(private restaurantsService:RestaurantsService){}
 
 ngOnInit():void{
@@ -23,8 +27,18 @@ ngOnInit():void{
   loadAdresses():void{
     this.restaurantsService.getRestaurants().subscribe({
       next:(data)=>{
-        this.addresses=data;
-        // console.log(data.address)
+        this.addresses=data.map(item => item.address);
+        console.log(data)
+        for (let x in this.addresses) {
+          this.addressesArray= this.addresses[x].split(',')[0]
+          this.splitedAdresses.push(this.addressesArray)
+          // console.log(this.splitedAdresses)
+        }
+this.uniuqeAddresses=this.splitedAdresses.filter((value,index,array)=>{
+  return array.indexOf(value)===index
+})
+ console.log(this.uniuqeAddresses)
+
       }
     })
   }

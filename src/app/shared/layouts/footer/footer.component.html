@@ -14,8 +14,8 @@
             </div>
             <div class="citiesDiv">
                 <h3 class="font-bold mb-[20px]">Cities</h3>
-                <ul class="text-gray-500">
-                    <li><a href="/">About</a></li>
+                <ul class="text-gray-500 text-[12px]">
+                    <li *ngFor="let city of uniqeCities"><a href="/">{{city}}</a></li>
                     <li><a href="/">Contact</a></li>
                     <li><a href="/">Terms of Service</a></li>
                     <li><a href="/">Privacy Policy</a></li>
@@ -23,11 +23,9 @@
             </div>
             <div class="dishesDiv">
                 <h3 class="font-bold mb-[20px]">Dishes</h3>
-                <ul class="text-gray-500">
-                    <li><a href="/">About</a></li>
-                    <li><a href="/">Contact</a></li>
-                    <li><a href="/">Terms of Service</a></li>
-                    <li><a href="/">Privacy Policy</a></li>
+                <ul class="text-gray-500 text-[12px]">
+                    <li *ngFor="let category of uniqueCategories"><a href="/">{{category}}</a></li>
+               
                 </ul>
             </div>
             <div>
@@ -52,7 +50,7 @@
             </div>
         </div>
         <hr>
-        <div class="py-[30px] text-gray-500">
+        <div class="py-[30px] text-gray-500 text-[11px]">
             <p>For any support or help you can contact us via our Live Chat</p>
         </div>
     </div>
