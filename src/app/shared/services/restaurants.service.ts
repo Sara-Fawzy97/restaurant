@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Restaurant } from '../../interfaces/Restaurant';
+import { Menu } from '../../interfaces/Menu';
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +29,12 @@ export class RestaurantsService {
     return this.http.get<Restaurant>(`${this.apiUrl}/${id}`);
   }
 
+  /*******get restaurNT  Menu* */
+ 
+ getRestaurantMenu(id:number):Observable<Menu[]>{
+  return this.http.get<Menu[]>(`${this.apiUrl}/${id}/menu`)
+ }
+ 
   /**
    * Create a new restaurant
    */

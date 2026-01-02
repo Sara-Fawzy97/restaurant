@@ -1,4 +1,4 @@
-<section class="container mx-auto px-4 py-8">
+<section class="container mx-auto px-7 py-8">
   <div class="mb-8">
     <h1 class="text-4xl font-bold text-gray-800 mb-2">Discover Restaurants</h1>
     <p class="text-gray-600">Discover all available restaurants</p>
@@ -16,13 +16,13 @@
   </div>
 
   <!-- Restaurants Grid -->
-  <div *ngIf="!loading && !error" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+  <div *ngIf="!loading && !error" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
     <div *ngFor="let restaurant of restaurants" 
-         class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
+         class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 hover:shadow-[#ed3c0b]">
       <div class="p-6">
-        <h3 class="text-xl font-semibold text-gray-800 mb-2">{{ restaurant.restaurantName }}</h3>
+        <h3 class="text-l font-semibold text-gray-800 mb-2">{{ restaurant.restaurantName }}</h3>
         
-        <div class="space-y-2 text-gray-600">
+        <div class="space-y-2 text-gray-600 text-[14px]">
           <p *ngIf="restaurant.address" class="flex items-center">
             <i class="fa-solid fa-location-dot mr-2 text-[#ed3c0b]"></i>
             {{ restaurant.address }}
@@ -41,10 +41,10 @@
           </p>
         </div>
 
-        <div class="mt-4 pt-4 border-t border-gray-200">
-          <button class="w-full bg-[#ed3c0b] text-white px-4 py-2 rounded-md hover:bg-[#d6340a] transition-colors">
+        <div class="mt-4 pt-4 border-t border-gray-100">
+          <a routerLink="/restaurant/{{restaurant.restaurantID}}" class="w-full bg-[#ed3c0b] text-white text-[14px] px-12 py-2  rounded-md hover:bg-[#d6340a] transition-colors hover:scale-105">
             View Details
-          </button>
+          </a>
         </div>
       </div>
     </div>

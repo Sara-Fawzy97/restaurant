@@ -1,6 +1,6 @@
 export interface Restaurant {
     restaurantID?: number;
-    restaurantName: string;
+    restaurantName?: string;
     address?: string;
     type?: string;
     parkingLot?:boolean;

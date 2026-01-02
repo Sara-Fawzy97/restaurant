@@ -14,24 +14,20 @@
             </div>
             <div class="citiesDiv">
                 <h3 class="font-bold mb-[20px]">Cities</h3>
-                <ul class="text-gray-500 text-[12px]">
-                    <li *ngFor="let city of uniqeCities"><a href="/">{{city}}</a></li>
-                    <li><a href="/">Contact</a></li>
-                    <li><a href="/">Terms of Service</a></li>
-                    <li><a href="/">Privacy Policy</a></li>
+                <ul class="text-gray-500 text-[12px] ">
+                    <li *ngFor="let city of uniqeCities"><a href="/" class="hover:text-[#ed3c0b]">{{city}}</a></li>
                 </ul>
             </div>
             <div class="dishesDiv">
                 <h3 class="font-bold mb-[20px]">Dishes</h3>
-                <ul class="text-gray-500 text-[12px]">
-                    <li *ngFor="let category of uniqueCategories"><a href="/">{{category}}</a></li>
-               
+                <ul class="text-gray-500 text-[12px] grid grid-cols-2">
+                    <li *ngFor="let category of uniqueCategories"><a href="/"  class="hover:text-[#ed3c0b]">{{category}}</a></li>
                 </ul>
             </div>
             <div>
                 <h3 class="font-bold mb-[20px]">Follow Us</h3>
                 <div class="text-gray-500 gap-2">
-                    <a href="#" class="inline-block"><svg xmlns="http://www.w3.org/2000/svg" height="20" width="20"
+                    <a href="#" class="inline-block" ><svg xmlns="http://www.w3.org/2000/svg" height="20" width="20"
                             viewBox="0 0 512 512"><!--!Font Awesome Free v7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
                             <path
                                fill="#9d9fa2" d="M512 256C512 114.6 397.4 0 256 0S0 114.6 0 256C0 376 82.7 476.8 194.2 504.5l0-170.3-52.8 0 0-78.2 52.8 0 0-33.7c0-87.1 39.4-127.5 125-127.5 16.2 0 44.2 3.2 55.7 6.4l0 70.8c-6-.6-16.5-1-29.6-1-42 0-58.2 15.9-58.2 57.2l0 27.8 83.6 0-14.4 78.2-69.3 0 0 175.9C413.8 494.8 512 386.9 512 256z" />

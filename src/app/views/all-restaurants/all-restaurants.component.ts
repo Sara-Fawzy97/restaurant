@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RestaurantsService} from '../../shared/services/restaurants.service';
 import { Restaurant } from '../../interfaces/Restaurant';
+import { RouterLink } from "@angular/router";
 
 @Component({
   selector: 'app-all-restaurants',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './all-restaurants.component.html',
   styleUrl: './all-restaurants.component.css'
 })
