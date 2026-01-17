@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { RestaurantsService, Restaurant } from './restaurants.service';
-
+import { RestaurantsService} from './restaurants.service';
+import { Restaurant } from '../../interfaces/Restaurant';
 describe('RestaurantsService', () => {
   let service: RestaurantsService;
   let httpMock: HttpTestingController;
@@ -26,8 +26,8 @@ describe('RestaurantsService', () => {
   describe('getRestaurants', () => {
     it('should return an Observable<Restaurant[]>', () => {
       const mockRestaurants: Restaurant[] = [
-        { id: 1, name: 'Test Restaurant 1', description: 'Test Description 1' },
-        { id: 2, name: 'Test Restaurant 2', description: 'Test Description 2' }
+        { restaurantID: 1, restaurantName: 'Test Restaurant 1' },
+        { restaurantID: 2, restaurantName: 'Test Restaurant 2'}
       ];
 
       service.getRestaurants().subscribe(restaurants => {
@@ -44,9 +44,8 @@ describe('RestaurantsService', () => {
   describe('getRestaurantById', () => {
     it('should return an Observable<Restaurant>', () => {
       const mockRestaurant: Restaurant = {
-        id: 1,
-        name: 'Test Restaurant',
-        description: 'Test Description'
+        restaurantID: 1,
+        restaurantName: 'Test Restaurant'
       };
 
       service.getRestaurantById(1).subscribe(restaurant => {
@@ -62,12 +61,12 @@ describe('RestaurantsService', () => {
   describe('createRestaurant', () => {
     it('should create a restaurant and return an Observable<Restaurant>', () => {
       const newRestaurant: Restaurant = {
-        name: 'New Restaurant',
-        description: 'New Description'
+        restaurantName: 'New Restaurant',
+        // description: 'New Description'
       };
 
       const createdRestaurant: Restaurant = {
-        id: 3,
+        restaurantID: 3,
         ...newRestaurant
       };
 
@@ -85,9 +84,8 @@ describe('RestaurantsService', () => {
   describe('updateRestaurant', () => {
     it('should update a restaurant and return an Observable<Restaurant>', () => {
       const updatedRestaurant: Restaurant = {
-        id: 1,
-        name: 'Updated Restaurant',
-        description: 'Updated Description'
+        restaurantID: 1,
+        restaurantName: 'Updated Restaurant'
       };
 
       service.updateRestaurant(1, updatedRestaurant).subscribe(restaurant => {
@@ -113,6 +111,7 @@ describe('RestaurantsService', () => {
     });
   });
 });
+
 
 
 

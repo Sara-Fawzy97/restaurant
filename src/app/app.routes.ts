@@ -12,7 +12,7 @@ export const routes: Routes = [
     path: 'restaurants',
     component: AllRestaurantsComponent
   },
-  {path:'restaurant/:id',
+  {path:'restaurant/:id/:category',
   component: OneRestaurantComponent
   }
  

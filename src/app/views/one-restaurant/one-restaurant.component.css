@@ -1,4 +1,4 @@
-section:first-of-type{
+.banner{
 background: url(/assets/landing-bg-dishes-min.jpg) no-repeat rgb(0, 0, 0,.5) ;
 background-size:cover;
 background-position: center; 

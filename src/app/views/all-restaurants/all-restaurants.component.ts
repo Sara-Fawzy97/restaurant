@@ -29,6 +29,7 @@ export class AllRestaurantsComponent implements OnInit {
     this.restaurantsService.getRestaurants().subscribe({
       next: (data) => {
         this.restaurants = data;
+        console.log(data)
         this.loading = false;
       },
       error: (err) => {

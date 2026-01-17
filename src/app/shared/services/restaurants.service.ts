@@ -9,7 +9,7 @@ import { Menu } from '../../interfaces/Menu';
 })
 export class RestaurantsService {
   private apiUrl = 'https://fakerestaurantapi.runasp.net/api/Restaurant'; // Adjust this to your actual API endpoint
-
+  //                https://fakerestaurantapi.runasp.net/api/Restaurant?category=Parsi Cuisine
   constructor(private http: HttpClient) { }
 
   /**
@@ -34,7 +34,22 @@ export class RestaurantsService {
  getRestaurantMenu(id:number):Observable<Menu[]>{
   return this.http.get<Menu[]>(`${this.apiUrl}/${id}/menu`)
  }
- 
+
+
+ /****** Get restaurant by Categories*** */
+
+ getRetaurantsCategories(category:any):Observable<Restaurant[]>
+{ return this.http.get<Restaurant[]>(`${this.apiUrl}?category=${category}`)
+
+} 
+
+///5/menu?sortbyprice=desc
+/*******sort menu by price*** */
+sortMenuByPrice(id:number,sort:string):Observable<Menu[]>{
+  return this.http.get<Menu[]>(`${this.apiUrl}/${id}/menu?sortbyprice=${sort}`)
+}
+
+
   /**
    * Create a new restaurant
    */
