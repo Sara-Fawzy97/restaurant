@@ -9,13 +9,13 @@ import { Menu } from '../../interfaces/Menu';
 })
 export class RestaurantsService {
 
-  private apiUrl = '/api/restaurants'; // شيلنا الجزء بتاع https...
+  private apiUrl = '/api/restaurant'; // شيلنا الجزء بتاع https...
   //  apiUrl = 'https://fakerestaurantapi.runasp.net/api/Restaurant'; // Adjust this to your actual API endpoint
   //                https://fakerestaurantapi.runasp.net/api/Restaurant?category=Parsi Cuisine
   constructor(private http: HttpClient) { }
 
   /**
-   * Get all restaurants
+    Get all restaurants
    */
   getRestaurants():Observable<Restaurant[]>{
     return this.http.get<Restaurant[]>(this.apiUrl);
