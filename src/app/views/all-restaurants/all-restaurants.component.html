@@ -17,7 +17,7 @@
 
   <!-- Restaurants Grid -->
   <div  class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-    <div *ngFor="let restaurant of restaurants" 
+    <div *ngFor="let restaurant of paginatedRestaurants" 
          class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 hover:shadow-[#ed3c0b]">
       <div class="p-6">
         <h3 class="text-l font-semibold text-gray-800 mb-2">{{ restaurant.restaurantName }}</h3>
@@ -49,6 +49,12 @@
       </div>
     </div>
   </div>
+<mat-paginator [length]="restaurants.length"
+               [pageSize]="pageSize"
+               [pageSizeOptions]="[ 10,15, 20]"
+               aria-label="Select page"
+               (page)="handlePageEvent($event)">
+</mat-paginator>
 
   <!-- Empty State -->
   <div *ngIf=" restaurants.length === 0" class="text-center py-12">

@@ -42,6 +42,10 @@ export class RestaurantsService {
 
 } 
 
+getRestaurantByCity(city:string,name:string):Observable<Restaurant[]>{
+return this.http.get<Restaurant[]>(`${this.apiUrl}?address=${city}&name=${name}`)
+}
+
 ///5/menu?sortbyprice=desc
 /*******sort menu by price*** */
 sortMenuByPrice(id:number,sort:string):Observable<Menu[]>{
