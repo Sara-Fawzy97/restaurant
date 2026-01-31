@@ -5,18 +5,18 @@
   </div>
 
   <!-- Loading State -->
-  <div *ngIf="loading" class="text-center py-12">
+  <!-- <div *ngIf="loading" class="text-center py-12">
     <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-[#ed3c0b]"></div>
     <p class="mt-4 text-gray-600">Loading restaurants...</p>
-  </div>
+  </div> -->
 
   <!-- Error State -->
-  <div *ngIf="error && !loading" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+  <!-- <div *ngIf="error && !loading" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
     <p>{{ error }}</p>
-  </div>
+  </div> -->
 
   <!-- Restaurants Grid -->
-  <div *ngIf="!loading && !error" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
+  <div  class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
     <div *ngFor="let restaurant of restaurants" 
          class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 hover:shadow-[#ed3c0b]">
       <div class="p-6">
@@ -51,7 +51,7 @@
   </div>
 
   <!-- Empty State -->
-  <div *ngIf="!loading && !error && restaurants.length === 0" class="text-center py-12">
+  <div *ngIf=" restaurants.length === 0" class="text-center py-12">
     <i class="fa-solid fa-store text-6xl text-gray-300 mb-4"></i>
     <p class="text-xl text-gray-600">No restaurants found</p>
   </div>

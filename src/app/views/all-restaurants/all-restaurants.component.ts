@@ -13,31 +13,34 @@ import { RouterLink } from "@angular/router";
 })
 export class AllRestaurantsComponent implements OnInit {
   restaurants: Restaurant[] = [];
-  loading: boolean = false;
-  error: string | null = null;
+  // loading: boolean = false;
+  // error: string | null = null;
 
   constructor(private restaurantsService: RestaurantsService) { }
 
-  ngOnInit(): void {
-    this.loadRestaurants();
-  }
+
 
   loadRestaurants(): void {
-    this.loading = true;
-    this.error = null;
+    // this.loading = true;
+    // this.error = null;
 
     this.restaurantsService.getRestaurants().subscribe({
-      next: (data) => {
+      next: (data:any) => {
         this.restaurants = data;
         console.log(data)
-        this.loading = false;
+        // this.loading = false;
       },
-      error: (err) => {
-        this.error = 'Failed to load restaurants. Please try again later.';
-        this.loading = false;
-        console.error('Error loading restaurants:', err);
-      }
+      // error: (err) => {
+      //   // this.error = 'Failed to load restaurants. Please try again later.';
+      //   // this.loading = false;
+      //   console.error('Error loading restaurants:', err);
+      // }
     });
+  }
+
+
+  ngOnInit(): void {
+    this.loadRestaurants();
   }
 }
 

@@ -1,6 +1,6 @@
 section:first-of-type {
 background: url(/assets/landing-bg-dishes-min.jpg) no-repeat rgb(0, 0, 0,.5) ;
-height: 130%;
+height: 115%;
 background-size: cover;
 background-blend-mode: overlay;
 
@@ -37,4 +37,11 @@ h3::before{
     background: url(/assets/wave.svg) no-repeat ;
     background-size: cover;
     background-position: center center;
+}
+
+/********** mobile screen **************/
+@media screen and (max-width:425px) {
+section:first-of-type {
+    height: 50%;
+}
 }

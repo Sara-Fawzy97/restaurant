@@ -8,25 +8,24 @@ import { Menu } from '../../interfaces/Menu';
   providedIn: 'root'
 })
 export class RestaurantsService {
-  private apiUrl = 'https://fakerestaurantapi.runasp.net/api/Restaurant'; // Adjust this to your actual API endpoint
+
+  private apiUrl = '/api/Restaurant'; // شيلنا الجزء بتاع https...
+  //  apiUrl = 'https://fakerestaurantapi.runasp.net/api/Restaurant'; // Adjust this to your actual API endpoint
   //                https://fakerestaurantapi.runasp.net/api/Restaurant?category=Parsi Cuisine
   constructor(private http: HttpClient) { }
 
   /**
    * Get all restaurants
    */
-  getRestaurants(): Observable<Restaurant[]> {
+  getRestaurants():Observable<Restaurant[]>{
     return this.http.get<Restaurant[]>(this.apiUrl);
   }
 
-  // getRestaurantsByAddress():Observable<Restaurants[]>{
-
-  // }
   /**
    * Get a restaurant by ID
    */
-  getRestaurantById(id: number): Observable<Restaurant> {
-    return this.http.get<Restaurant>(`${this.apiUrl}/${id}`);
+  getRestaurantById(id: number){
+    return this.http.get(`${this.apiUrl}/${id}`);
   }
 
   /*******get restaurNT  Menu* */

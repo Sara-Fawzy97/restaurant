@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from "@angular/router";
 
@@ -16,9 +16,13 @@ import { Menu } from '../../interfaces/Menu';
 })
 export class OneRestaurantComponent implements OnInit {
 
-  constructor(private route: ActivatedRoute, private restaurantsService: RestaurantsService) { }
+  constructor(
+    private route: ActivatedRoute, 
+    private restaurantsService: RestaurantsService,
+    private cdr: ChangeDetectorRef
+  ) { }
 
-  id: number = this.route.snapshot.params['id']
+  id: number =0
   restaurant: Restaurant = {}
   category: string = ''
   restaurants: Restaurant[] = []
@@ -52,15 +56,19 @@ export class OneRestaurantComponent implements OnInit {
     this.restaurantsService.getRestaurantMenu(this.id).subscribe({
       next: (data) => {
         this.menuItems = data
+        // Debug: Log first item to see its structure
+        if (this.menuItems.length > 0) {
+          console.log('First menu item structure:', this.menuItems[0])
+          console.log('All menu items:', this.menuItems)
+        }
         // Initialize quantities for all items
-        this.menuItems.forEach(item => {
-          if (item.itemId !== undefined) {
-            this.itemQuantities[item.itemId] = 1
-          }
+        // Use itemId if available, otherwise use index
+        this.menuItems.forEach((item, index) => {
+          const key = item.itemId !== undefined ? item.itemId : index
+          this.itemQuantities[key] = 1
         })
         // Apply current sort after menu is loaded
         this.sortbyPrice()
-        console.log(this.menuItems)
       },
       error: (error) => {
         console.error('Error fetching menu:', error)
@@ -68,26 +76,39 @@ export class OneRestaurantComponent implements OnInit {
     });
   }
 
-  getItemQuantity(itemId: number | undefined): number {
-    if (itemId === undefined) return 1
-    return this.itemQuantities[itemId] || 1
+  getItemKey(item: Menu, index: number): number {
+    // Use itemId if available, otherwise use index
+    return item.itemId !== undefined ? item.itemId : index
   }
 
-  increaseItems(itemId: number | undefined): void {
-    if (itemId === undefined) return
-    if (!this.itemQuantities[itemId]) {
-      this.itemQuantities[itemId] = 1
-    }
-    this.itemQuantities[itemId]++
+  getItemQuantity(item: Menu, index: number): number {
+    const key = this.getItemKey(item, index)
+    return this.itemQuantities[key] || 1
   }
 
-  decreaseItems(itemId: number | undefined): void {
-    if (itemId === undefined) return
-    if (!this.itemQuantities[itemId]) {
-      this.itemQuantities[itemId] = 1
-    }
-    if (this.itemQuantities[itemId] > 1) {
-      this.itemQuantities[itemId]--
+  increaseItems(item: Menu, index: number): void {
+    const key = this.getItemKey(item, index)
+    const currentQuantity = this.itemQuantities[key] || 1
+    const newQuantity = currentQuantity + 1
+    console.log(`Increasing item (key: ${key}) from ${currentQuantity} to ${newQuantity}`)
+    // Create new object reference to trigger change detection
+    this.itemQuantities = { ...this.itemQuantities, [key]: newQuantity }
+    console.log('Updated quantities:', this.itemQuantities)
+    this.cdr.detectChanges()
+  }
+
+  decreaseItems(item: Menu, index: number): void {
+    const key = this.getItemKey(item, index)
+    const currentQuantity = this.itemQuantities[key] || 1
+    if (currentQuantity > 1) {
+      const newQuantity = currentQuantity - 1
+      console.log(`Decreasing item (key: ${key}) from ${currentQuantity} to ${newQuantity}`)
+      // Create new object reference to trigger change detection
+      this.itemQuantities = { ...this.itemQuantities, [key]: newQuantity }
+      console.log('Updated quantities:', this.itemQuantities)
+      this.cdr.detectChanges()
+    } else {
+      console.log(`Cannot decrease item (key: ${key}) below 1`)
     }
   }
   
@@ -109,7 +130,7 @@ export class OneRestaurantComponent implements OnInit {
     })
   }
 
-  sortingType: string = "asc"
+  sortingType: string = " "
 
   onSortChange(event: Event): void {
     const value = (event.target as HTMLSelectElement).value
@@ -124,16 +145,22 @@ export class OneRestaurantComponent implements OnInit {
       return
     }
 
+    // Save current quantities before sorting
+    const currentQuantities = { ...this.itemQuantities }
+
     // Try API sorting first, fallback to client-side sorting
     this.restaurantsService.sortMenuByPrice(this.id, this.sortingType).subscribe({
       next: (data) => {
         this.menuItems = data
-        // Re-initialize quantities for sorted items
-        this.menuItems.forEach(item => {
-          if (item.itemId !== undefined && !this.itemQuantities[item.itemId]) {
-            this.itemQuantities[item.itemId] = 1
-          }
+        // Preserve existing quantities and initialize new ones
+        const newQuantities: { [key: number]: number } = {}
+        this.menuItems.forEach((item, index) => {
+          const key = item.itemId !== undefined ? item.itemId : index
+          // Preserve existing quantity or initialize to 1
+          newQuantities[key] = currentQuantities[key] || 1
         })
+        this.itemQuantities = newQuantities
+        this.cdr.detectChanges()
         console.log('Sorted menu:', data)
       },
       error: (error) => {
@@ -145,6 +172,9 @@ export class OneRestaurantComponent implements OnInit {
   }
 
   sortMenuClientSide(): void {
+    // Save current quantities before sorting
+    const currentQuantities = { ...this.itemQuantities }
+    
     this.menuItems = [...this.menuItems].sort((a, b) => {
       const priceA = parseFloat(a.itemPrice?.toString() || '0')
       const priceB = parseFloat(b.itemPrice?.toString() || '0')
@@ -155,17 +185,27 @@ export class OneRestaurantComponent implements OnInit {
         return priceB - priceA
       }
     })
+    
+    // Preserve quantities after sorting
+    const newQuantities: { [key: number]: number } = {}
+    this.menuItems.forEach((item, index) => {
+      const key = item.itemId !== undefined ? item.itemId : index
+      newQuantities[key] = currentQuantities[key] || 1
+    })
+    this.itemQuantities = newQuantities
+    this.cdr.detectChanges()
   }
 
   ngOnInit() {
     // Initialize category from route params if available
-    this.category = this.route.snapshot.params['category'] || ''
-    
-    // Load restaurant data first
-    this.getOneRestaurant()
-    // Load menu
-    this.getMenu()
-    // Related restaurants will be loaded after restaurant data is fetched
+    // this.category = this.route.snapshot.params['category'] || ''
+    this.route.params.subscribe(params=>{
+      this.id=+params['id']
+      this.getOneRestaurant()
+      // Load menu
+      this.getMenu()
+
+    })
   }
 
 

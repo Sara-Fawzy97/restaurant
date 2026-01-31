@@ -47,7 +47,7 @@
                 </div>
             </div>
             <div class="bg-white  rounded-lg shadow-lg mt-3 w-full  md:h-36 overflow-hidden hover:bg-[#ed3c0b80]  transition-colors duration-150 cursor-pointer "
-                *ngFor="let item of menuItems">
+                *ngFor="let item of menuItems; let i = index">
                 <div class="grid grid-cols-5 gap-2  py-5 ps-5 ">
                     <img src="{{item.imageUrl}}" alt="{{item.itemName}}"
                         class="col-span-1 md:w-[100px] md:h-[100px] rounded-full">
@@ -57,18 +57,20 @@
                     </div>
 
                     <div class="col-span-2 justify-center ">
-                        <div class="flex pt-2 content-center">
-                            <span class="w-6 h-6 cursor-pointer" (click)="increaseItems(item.itemId)"><svg xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 512 512">
+                        <div class="flex pt-2 content-center items-center">
+                            <button type="button" class="w-6 h-6 cursor-pointer border-none bg-transparent p-0 flex items-center justify-center" (click)="increaseItems(item, i); $event.stopPropagation()">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="w-full h-full">
                                     <path fill="#ed3c0b"
                                         d="M256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512zM232 344l0-64-64 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l64 0 0-64c0-13.3 10.7-24 24-24s24 10.7 24 24l0 64 64 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-64 0 0 64c0 13.3-10.7 24-24 24s-24-10.7-24-24z" />
-                                </svg></span>
-                            <p class="mx-2">{{getItemQuantity(item.itemId)}}</p>
-                            <span class="w-6 h-6 cursor-pointer" (click)="decreaseItems(item.itemId)"><svg xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 512 512">
+                                </svg>
+                            </button>
+                            <p class="mx-2 min-w-[20px] text-center">{{getItemQuantity(item, i)}}</p>
+                            <button type="button" class="w-6 h-6 cursor-pointer border-none bg-transparent p-0 flex items-center justify-center" (click)="decreaseItems(item, i); $event.stopPropagation()">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="w-full h-full">
                                     <path fill="#ed3c0b"
                                         d="M256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512zM168 232l176 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-176 0c-13.3 0-24-10.7-24-24s10.7-24 24-24z" />
-                                </svg></span>
+                                </svg>
+                            </button>
                         </div>
                         <div>
                             <button
@@ -85,13 +87,13 @@
 
     <!---------Related Restaurants-------->
 
-    <section class="grid-col-1 ">
+    <section class="grid-col-1 mt-4 md:mt-0">
         <div>
-            <div class="border-solid border-2 border-opacity-90 p-2 rounded-lg ">
-                <h2 class="text-[20px] font-bold ml-2">Related restaurants</h2>
+            <div class="grid grid-cols-2 gap-2 md:grid-cols-1 bg-[#ed3c0b] border-2 border-opacity-90 p-2 rounded-lg ">
+                <h2 class="text-[20px] font-bold ml-2 text-white">Related restaurants</h2><br>
 
                 <div *ngFor="let restaurant of restaurants"
-                    class="border-b-2 overflow-hidden  hover:shadow-xl transition-shadow duration-300 ">
+                    class="bg-white border-b-2 rounded-lg overflow-hidden  hover:shadow-xl transition-shadow duration-300 ">
                     <div class="p-6">
                         <h3 class="text-l font-semibold text-gray-800 mb-2">{{ restaurant.restaurantName }}</h3>
 
