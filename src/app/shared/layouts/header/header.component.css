@@ -148,4 +148,7 @@
 .btn:active {
   transform: scale(0.98);
 }
+i{
+   color:#ed3c0b !important
+}
 

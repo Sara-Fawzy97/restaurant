@@ -6,6 +6,8 @@ import { ActivatedRoute } from '@angular/router';
 import { RestaurantsService } from '../../shared/services/restaurants.service';
 import { Restaurant } from '../../interfaces/Restaurant';
 import { Menu } from '../../interfaces/Menu';
+import { CartItem } from '../../interfaces/CartItem';
+import { CartService } from '../../shared/services/cart.service';
 
 @Component({
   selector: 'app-one-restaurant',
@@ -19,7 +21,9 @@ export class OneRestaurantComponent implements OnInit {
   constructor(
     private route: ActivatedRoute, 
     private restaurantsService: RestaurantsService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+private cartService:CartService
+
   ) { }
 
   id: number =0
@@ -64,7 +68,7 @@ export class OneRestaurantComponent implements OnInit {
         // Initialize quantities for all items
         // Use itemId if available, otherwise use index
         this.menuItems.forEach((item, index) => {
-          const key = item.itemId !== undefined ? item.itemId : index
+          const key = item.itemID !== undefined ? item.itemID : index
           this.itemQuantities[key] = 1
         })
         // Apply current sort after menu is loaded
@@ -78,7 +82,7 @@ export class OneRestaurantComponent implements OnInit {
 
   getItemKey(item: Menu, index: number): number {
     // Use itemId if available, otherwise use index
-    return item.itemId !== undefined ? item.itemId : index
+    return item.itemID !== undefined ? item.itemID : index
   }
 
   getItemQuantity(item: Menu, index: number): number {
@@ -155,7 +159,7 @@ export class OneRestaurantComponent implements OnInit {
         // Preserve existing quantities and initialize new ones
         const newQuantities: { [key: number]: number } = {}
         this.menuItems.forEach((item, index) => {
-          const key = item.itemId !== undefined ? item.itemId : index
+          const key = item.itemID !== undefined ? item.itemID : index
           // Preserve existing quantity or initialize to 1
           newQuantities[key] = currentQuantities[key] || 1
         })
@@ -189,11 +193,17 @@ export class OneRestaurantComponent implements OnInit {
     // Preserve quantities after sorting
     const newQuantities: { [key: number]: number } = {}
     this.menuItems.forEach((item, index) => {
-      const key = item.itemId !== undefined ? item.itemId : index
+      const key = item.itemID !== undefined ? item.itemID : index
       newQuantities[key] = currentQuantities[key] || 1
     })
     this.itemQuantities = newQuantities
     this.cdr.detectChanges()
+  }
+
+  addToCart(item: Menu, index: number): void {
+    const quantity = this.getItemQuantity(item, index)
+    this.cartService.addToCart(item,quantity)
+    // console.log(quantity)
   }
 
   ngOnInit() {

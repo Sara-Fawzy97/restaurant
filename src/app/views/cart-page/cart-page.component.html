@@ -1,0 +1,80 @@
+<div class="p-6 max-w-4xl mx-auto">
+  <h2 class="text-2xl font-bold mb-4">Your Cart</h2>
+
+  <div *ngIf="cartItems.length === 0" class="text-gray-600">
+    <p>Your cart is empty.</p>
+    <a routerLink="/restaurants" class="text-[#ed3c0b] underline mt-2 inline-block">Browse restaurants</a>
+  </div>
+
+  <div *ngIf="cartItems.length > 0" class="space-y-4">
+    <div class="bg-white rounded-lg shadow p-4">
+      <div class="flex justify-between items-center mb-3">
+        <div>
+          <p class="font-semibold">Total items: {{ totalItems }}</p>
+          <p class="font-semibold">Total price: {{ totalPrice | number:'1.2-2' }} $</p>
+        </div>
+        <button
+          (click)="clearCart()"
+          class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 text-sm"
+        >
+          Clear Cart
+        </button>
+      </div>
+
+      <div *ngFor="let cartItem of cartItems" class="border-t pt-3 mt-3 first:border-t-0 first:pt-0 first:mt-0">
+        <div class="flex justify-between items-center" *ngIf="cartItem && cartItem.item">
+          <div>
+            <p class="font-semibold">{{ cartItem.item.itemName }}</p>
+            <p class="text-sm text-gray-600">
+              Price: {{ cartItem.item.itemPrice }} $
+            </p>
+          </div>
+
+          <div class="flex items-center space-x-4">
+            <div class="flex items-center">
+              <button
+                type="button"
+                class="w-6 h-6 cursor-pointer border-none bg-transparent p-0 flex items-center justify-center"
+                (click)="decreaseQuantity(cartItem)"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="w-full h-full">
+                  <path
+                    fill="#ed3c0b"
+                    d="M256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512zM168 232l176 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-176 0c-13.3 0-24-10.7-24-24s10.7-24 24-24z"
+                  />
+                </svg>
+              </button>
+              <p class="mx-2 min-w-[20px] text-center">{{ cartItem.quantity }}</p>
+              <button
+                type="button"
+                class="w-6 h-6 cursor-pointer border-none bg-transparent p-0 flex items-center justify-center"
+                (click)="increaseQuantity(cartItem)"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="w-full h-full">
+                  <path
+                    fill="#ed3c0b"
+                    d="M256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512zM232 344l0-64-64 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l64 0 0-64c0-13.3 10.7-24 24-24s24 10.7 24 24l0 64 64 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-64 0 0 64c0 13.3-10.7 24-24 24s-24-10.7-24-24z"
+                  />
+                </svg>
+              </button>
+            </div>
+
+            <div class="text-right">
+              <p class="font-semibold">
+                {{ cartItem.totalPrice || (cartItem.quantity * (cartItem.item.itemPrice || 0)) | number:'1.2-2' }} $
+              </p>
+              <button
+                (click)="removeItem(cartItem)"
+                class="text-xs text-red-500 hover:text-red-600 mt-1"
+              >
+                Remove
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <a routerLink="/restaurants" class="text-[#ed3c0b] underline inline-block">Continue shopping</a>
+  </div>
+</div>

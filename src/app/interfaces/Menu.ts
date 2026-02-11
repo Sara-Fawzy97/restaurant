@@ -1,9 +1,10 @@
 export interface Menu{
-itemId?:number;
+itemID?:number;
 itemName?:string;
 itemDescriptyion?:string;
 itemPrice?:any;
 restaurantID?:number;
 restaurantName?:string;
 imageUrl?:any;
+quantity?:number
 }

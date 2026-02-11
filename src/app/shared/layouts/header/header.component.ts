@@ -1,6 +1,8 @@
 import { ChangeDetectionStrategy,Component,inject, Input, viewChild } from '@angular/core';
 import {MatButtonModule} from '@angular/material/button';
 import {MatDialog, MatDialogModule} from '@angular/material/dialog';
+import { CartService } from '../../services/cart.service';
+// import { SideCartComponent } from "../side-cart/side-cart.component";
 
 @Component({
   selector: 'app-header',
@@ -10,7 +12,10 @@ import {MatDialog, MatDialogModule} from '@angular/material/dialog';
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
-  constructor() {
+  constructor(private cartService:CartService) {
+this.cartService.cart$.subscribe(items=>{this.cartCount=this.cartService.getTotalItems()
+})
+    
     // // #region agent log
     // try {
     //   console.log('[DEBUG] header.component.ts: HeaderComponent constructor');
@@ -20,6 +25,8 @@ export class HeaderComponent {
     // }
     // // #endregion
   }
+cartCount=0
+
   readonly dialog = inject(MatDialog);
   openDialog() {
     const dialogRef = this.dialog.open(DialogContentExampleDialog);
