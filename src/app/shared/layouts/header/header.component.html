@@ -16,8 +16,13 @@
   </button>
   
   <div class="relative">
-  <i class="fa-solid fa-cart-shopping cursor-pointer"></i>
- <span class="absolute left-3 text-white size-3 bg-red-600 p-1 rounded-full">{{cartCount}}</span>
+  <a routerLink="/cart" > 
+     <i class="fa-solid fa-cart-shopping cursor-pointer"></i>
+  </a>
+  <span *ngIf="(cartItemsCount$|async)as count">
+ <span class="absolute  left-3 top-0 text-white text-[10px] bg-red-600 px-1 rounded-full" *ngIf="count>0">{{count}}</span>
+
+  </span>
   </div>
  
     </div>

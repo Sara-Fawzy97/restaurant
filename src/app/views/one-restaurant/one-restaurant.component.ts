@@ -24,7 +24,9 @@ export class OneRestaurantComponent implements OnInit {
     private cdr: ChangeDetectorRef,
 private cartService:CartService
 
-  ) { }
+  ) {
+    
+   }
 
   id: number =0
   restaurant: Restaurant = {}

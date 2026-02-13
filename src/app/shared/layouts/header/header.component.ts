@@ -2,19 +2,31 @@ import { ChangeDetectionStrategy,Component,inject, Input, viewChild } from '@ang
 import {MatButtonModule} from '@angular/material/button';
 import {MatDialog, MatDialogModule} from '@angular/material/dialog';
 import { CartService } from '../../services/cart.service';
+import { RouterModule } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
+import { User } from '../../../interfaces/User';
+import { map, Observable } from 'rxjs';
 // import { SideCartComponent } from "../side-cart/side-cart.component";
-
+import { CommonModule, AsyncPipe } from '@angular/common'; // استيراد الـ AsyncPipe
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [MatButtonModule, MatDialogModule],
+  imports: [MatButtonModule, MatDialogModule,RouterModule, CommonModule,AsyncPipe],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
+
 export class HeaderComponent {
+  
+  cartItemsCount$: Observable<number>;
   constructor(private cartService:CartService) {
-this.cartService.cart$.subscribe(items=>{this.cartCount=this.cartService.getTotalItems()
-})
+// this.cartService.cart$.subscribe(items=>{this.cartCount=this.cartService.getTotalItems()
+// })
+
+// بنخلي المتغير ده يشوف الـ Subject اللي في الخدمة ويحسب العدد
+    this.cartItemsCount$ = this.cartService.cart$.pipe(
+      map(items => items.reduce((acc, curr) => acc + curr.quantity,0))
+    );
     
     // // #region agent log
     // try {
@@ -25,7 +37,11 @@ this.cartService.cart$.subscribe(items=>{this.cartCount=this.cartService.getTota
     // }
     // // #endregion
   }
-cartCount=0
+// cartCount=0
+
+//  cartCount$ = this.cartService.cart$.pipe(
+  //  map(() => this.cartService.getTotalItems())
+// );
 
   readonly dialog = inject(MatDialog);
   openDialog() {
@@ -40,7 +56,7 @@ cartCount=0
     const dialogRef = this.dialog.open(DialogContentExampleDialogSignup);
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
+      console.log(`Dialog : ${result}`);
     });
   }
   
@@ -61,12 +77,33 @@ cartCount=0
 })
 export class DialogContentExampleDialog {
   readonly dialog = inject(MatDialog);
+   
+  constructor(private authService:AuthService){}
+users:User[]=[]
+ngOnInit(){
+  this.signIn()
+}
+
+  signIn(){
+     this.authService.getAllUsers().subscribe({
+      next:(data:any)=>{
+        this.users=data
+        console.log(this.users)
+      },
+      error:(error)=>{
+        console.error(error)
+      }
+     })
+  }
+
+
+  register(){}
 
   openDialogSignup() {
     const dialogRef = this.dialog.open(DialogContentExampleDialogSignup);
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
+      console.log(`Dialog result in: ${result}`);
     });
   }
 }
