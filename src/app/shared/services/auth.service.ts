@@ -5,23 +5,25 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class AuthService {
+  private apiUrl = '/api/User'; // شيلنا الجزء بتاع https...
 
- url='https://fakerestaurantapi.runasp.net/api/User'
+//  url='https://fakerestaurantapi.runasp.net/api/User'
   constructor(private http:HttpClient) { }
 
   //get all users
  getAllUsers(){
-    return this.http.get(this.url)
+    return this.http.get(this.apiUrl)
   }
 
-  getUserKey(UserEmail:string,password:any){
-    return this.http.get(this.url+'/getusercode?UserEmail='+UserEmail+'&Password='+password)
+  //get user code by email and password
+  login(UserEmail:any,password:any){
+    return this.http.get(this.apiUrl+'/getusercode?UserEmail='+UserEmail+'&Password='+password)
 
   }
 
 //to add a new user
   registerUser(credentials:any){
-    this.http.post(this.url+'/register',credentials)
+   return this.http.post(this.apiUrl+'/register',credentials)
   }
 
 

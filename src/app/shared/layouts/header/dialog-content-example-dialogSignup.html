@@ -4,11 +4,11 @@
     <h2 mat-dialog-title class="text-gray-400 ">Create new account</h2>
     
     <mat-dialog-content class="mat-typography">
-     <form class="text-[14px] ">
-        <input type="email" placeholder="email" id="email" name="email" class="w-full h-8 border border-gray-300 rounded-md pl-3 focus:border-[#ed3c0b]"><br>
-        <input type="text" placeholder="name" id="name" name="name" class="w-full h-8 border border-gray-300 rounded-md pl-3 focus:border-[#ed3c0b] mt-2"><br>
-        <input  type="password" placeholder="password" id="password" name="password" class="w-full h-8 border border-gray-300 rounded-md pl-3 focus:border-[#ed3c0b] mt-2" ><br>
-   <a matButton mat-dialog-close  (click)="openDialog()" class="text-[12px]">Already have an account!</a> <br>
+     <form [formGroup]="registerForm" (ngSubmit)="registerUser(registerForm.value)" class="text-[14px] ">
+        <input formControlName="userEmail" type="email" placeholder="email" id="email" name="userEmail" class="w-full h-8 border border-gray-300 rounded-md pl-3 focus:border-[#ed3c0b]"><br>
+        <!-- <input ngModel #name="ngModel" type="text" placeholder="name" id="name" name="name" class="w-full h-8 border border-gray-300 rounded-md pl-3 focus:border-[#ed3c0b] mt-2"><br> -->
+        <input  formControlName="password"  type="password" placeholder="password" id="password" name="password" class="w-full h-8 border border-gray-300 rounded-md pl-3 focus:border-[#ed3c0b] mt-2" ><br>
+   <a matbutton mat-dialog-close (click)="openDialog()" class="text-[12px]">Already have an account!</a> <br>
         <button type="submit" class="text-[#ed3c0b] border border-[#ed3c0b] rounded-md mt-2 p-1" >Sign up</button>
      </form> 
     </mat-dialog-content>

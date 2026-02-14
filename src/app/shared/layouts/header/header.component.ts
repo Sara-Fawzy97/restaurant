@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { User } from '../../../interfaces/User';
 import { map, Observable } from 'rxjs';
+import { FormBuilder, FormControl, FormGroup,Validators , FormsModule,ReactiveFormsModule} from '@angular/forms';
 // import { SideCartComponent } from "../side-cart/side-cart.component";
 import { CommonModule, AsyncPipe } from '@angular/common'; // استيراد الـ AsyncPipe
 @Component({
@@ -72,23 +73,29 @@ export class HeaderComponent {
   selector: 'dialog-content-example-dialog',
   standalone: true,
   templateUrl: 'dialog-content-example-dialog.html',
-  imports: [MatDialogModule, MatButtonModule],
+  imports: [MatDialogModule, MatButtonModule, FormsModule,ReactiveFormsModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DialogContentExampleDialog {
   readonly dialog = inject(MatDialog);
    
   constructor(private authService:AuthService){}
-users:User[]=[]
+// users:User[]=[]
 ngOnInit(){
-  this.signIn()
+  // this.signIn()
 }
+// loginForm=this.fb.group({
+//   userName:[''],
+//   password:['']
+// })
 
-  signIn(){
-     this.authService.getAllUsers().subscribe({
+  signIn(userEmail:string,password:any){
+     this.authService.login(userEmail,password).subscribe({
       next:(data:any)=>{
-        this.users=data
-        console.log(this.users)
+        // this.users=data
+        console.log(userEmail,password)
+        console.log(data)
+        
       },
       error:(error)=>{
         console.error(error)
@@ -97,7 +104,6 @@ ngOnInit(){
   }
 
 
-  register(){}
 
   openDialogSignup() {
     const dialogRef = this.dialog.open(DialogContentExampleDialogSignup);
@@ -114,18 +120,40 @@ ngOnInit(){
   selector: 'dialog-content-example-dialogSignup',
   standalone: true,
   templateUrl: 'dialog-content-example-dialogSignup.html',
-  imports: [MatDialogModule, MatButtonModule],
+  imports: [MatDialogModule, MatButtonModule, ReactiveFormsModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DialogContentExampleDialogSignup {
  
+
+  constructor(private authService:AuthService,private fb: FormBuilder){}
   readonly dialog = inject(MatDialog);
+
   openDialog() {
     const dialogRef = this.dialog.open(DialogContentExampleDialog);
 
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);
     });
+  }
+
+registerForm=this.fb.group({
+  userEmail:['',[Validators.required,Validators.email]],
+  password:['',[Validators.required,Validators.maxLength(8)]]
+})
+
+//credentials c=> form value
+  registerUser(credentials:any){
+    this.authService.registerUser(credentials).subscribe({
+      next:(data:any)=>{
+        console.log("credentials: ",credentials)
+
+       console.log(data)
+      },
+      error:(err:any)=> {
+        console.log(err)
+      },
+    })
   }
 
 }
