@@ -3,24 +3,30 @@
   <div>
     <a href="/" ><img src="./assets/newLogo.svg" alt="elmenues logo" class="w-32 "></a></div>
     <div class="gap-g0.75 col-start-2 col-end-3 row-start-1 row-end-2 flex items-center justify-self-end lg:col-start-3 lg:col-end-[-1]">
-      <button
+      <button *ngIf="!isLogged" 
       matButton (click)="openDialog()"
         class="btn btn--ghost btn--sm ">
         Sign in
     </button>
     
-      <button
-        class="btn btn--ghost btn--sm "
+      <button *ngIf="!isLogged" 
+        class="btn btn--ghost btn--sm"
         matButton (click)="openDialogSignup()">
         Sign up
   </button>
+
+  <button *ngIf="isLogged" 
+  class="btn btn--ghost btn--sm text-white bg-[#ed3c0b]"
+  matButton (click)="logOut()">
+  Log Out
+</button>
   
   <div class="relative">
   <a routerLink="/cart" > 
      <i class="fa-solid fa-cart-shopping cursor-pointer"></i>
   </a>
   <span *ngIf="(cartItemsCount$|async)as count">
- <span class="absolute  left-3 top-0 text-white text-[10px] bg-red-600 px-1 rounded-full" *ngIf="count>0">{{count}}</span>
+ <span class="absolute  left-3 top-0 text-white text-[10px] bg-red-600 px-1 rounded-full" *ngIf="count>0">{{cartItemsCount$|async}}</span>
 
   </span>
   </div>

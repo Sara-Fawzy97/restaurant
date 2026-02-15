@@ -1,9 +1,9 @@
-<section class="rounded-lg p-4 md:p-8 w-80 md:w-96 text-[14px]">
+<section *ngIf="!(islogged|async)"  class="rounded-lg p-4 md:p-8 w-80 md:w-96 text-[14px]">
     <a href="/" class="items-center"><img src="./assets/newLogo.svg" alt="elmenues logo" class="w-32  "></a>
     
     <h2 mat-dialog-title class="text-gray-400 ">Create new account</h2>
     
-    <mat-dialog-content class="mat-typography">
+    <mat-dialog-content  class="mat-typography">
      <form [formGroup]="registerForm" (ngSubmit)="registerUser(registerForm.value)" class="text-[14px] ">
         <input formControlName="userEmail" type="email" placeholder="email" id="email" name="userEmail" class="w-full h-8 border border-gray-300 rounded-md pl-3 focus:border-[#ed3c0b]"><br>
         <!-- <input ngModel #name="ngModel" type="text" placeholder="name" id="name" name="name" class="w-full h-8 border border-gray-300 rounded-md pl-3 focus:border-[#ed3c0b] mt-2"><br> -->

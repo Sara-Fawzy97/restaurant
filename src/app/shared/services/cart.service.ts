@@ -19,7 +19,6 @@ export class CartService {
       if (savedCart) {
         // this.cartItems=JSON.parse(savedCart)
         this.cartSubject.next(JSON.parse(savedCart));
-        this.cartSubject.next([...this.cartItems]);
       }
     }
     this.cart$.subscribe(items => this.cartItems = items);
@@ -95,7 +94,7 @@ totalPrice:quantityAdded*(menuItem.itemPrice||0)});
   private saveCartToLocalStorage(): void {
     if (isPlatformBrowser(this.platformId)) {
       localStorage.setItem('cart', JSON.stringify(this.cartSubject.value ));
-this.cartSubject.next([...this.cartItems]);
+
     }
   }
 }

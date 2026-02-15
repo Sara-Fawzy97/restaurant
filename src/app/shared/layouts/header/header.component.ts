@@ -1,14 +1,13 @@
-import { ChangeDetectionStrategy,Component,inject, Input, viewChild } from '@angular/core';
-import {MatButtonModule} from '@angular/material/button';
-import {MatDialog, MatDialogModule} from '@angular/material/dialog';
+import { ChangeDetectionStrategy, Component, inject, Inject, PLATFORM_ID } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { CartService } from '../../services/cart.service';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { User } from '../../../interfaces/User';
 import { map, Observable } from 'rxjs';
-import { FormBuilder, FormControl, FormGroup,Validators , FormsModule,ReactiveFormsModule} from '@angular/forms';
-// import { SideCartComponent } from "../side-cart/side-cart.component";
-import { CommonModule, AsyncPipe } from '@angular/common'; // استيراد الـ AsyncPipe
+import { FormBuilder, FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule, AsyncPipe, isPlatformBrowser } from '@angular/common';
 @Component({
   selector: 'app-header',
   standalone: true,
@@ -20,7 +19,11 @@ import { CommonModule, AsyncPipe } from '@angular/common'; // استيراد ا�
 export class HeaderComponent {
   
   cartItemsCount$: Observable<number>;
-  constructor(private cartService:CartService) {
+  constructor(
+    private cartService: CartService, 
+    private authService: AuthService,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {
 // this.cartService.cart$.subscribe(items=>{this.cartCount=this.cartService.getTotalItems()
 // })
 
@@ -29,23 +32,15 @@ export class HeaderComponent {
       map(items => items.reduce((acc, curr) => acc + curr.quantity,0))
     );
     
-    // // #region agent log
-    // try {
-    //   console.log('[DEBUG] header.component.ts: HeaderComponent constructor');
-    //   fetch('http://127.0.0.1:7242/ingest/4a3402cb-745f-4c1b-a6bc-08b78ceb57e8',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'header.component.ts:14',message:'HeaderComponent constructor',data:{},timestamp:Date.now(),sessionId:'debug-session',runId:'run2',hypothesisId:'D'})}).catch((e)=>console.error('[DEBUG] Log fetch failed:',e));
-    // } catch(e) {
-    //   console.error('[DEBUG] Log setup failed:', e);
-    // }
-    // // #endregion
+  
   }
-// cartCount=0
-
-//  cartCount$ = this.cartService.cart$.pipe(
-  //  map(() => this.cartService.getTotalItems())
-// );
-
+// islogged=this.authService.isLoggedIn$
   readonly dialog = inject(MatDialog);
   openDialog() {
+    // لا تفتح الـ dialog إذا كان المستخدم مسجل دخول
+    if (this.isLogged) {
+      return;
+    }
     const dialogRef = this.dialog.open(DialogContentExampleDialog);
 
     dialogRef.afterClosed().subscribe(result => {
@@ -54,6 +49,10 @@ export class HeaderComponent {
   }
 
   openDialogSignup() {
+    // لا تفتح الـ dialog إذا كان المستخدم مسجل دخول
+    if (this.isLogged) {
+      return;
+    }
     const dialogRef = this.dialog.open(DialogContentExampleDialogSignup);
 
     dialogRef.afterClosed().subscribe(result => {
@@ -67,40 +66,64 @@ export class HeaderComponent {
     console.log('Sign in clicked');
     // Don't prevent default - let the link work normally
   }
+
+  get isLogged(){
+    let token=this.authService.hasToken()
+    if(token){
+      return true
+    }
+    return false
+  }
+
+  logOut(){
+    this.authService.logOut();
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.removeItem('UserCode');
+    }
+  }
 }
 
 @Component({
   selector: 'dialog-content-example-dialog',
   standalone: true,
   templateUrl: 'dialog-content-example-dialog.html',
-  imports: [MatDialogModule, MatButtonModule, FormsModule,ReactiveFormsModule],
+  imports: [MatDialogModule, MatButtonModule, FormsModule,ReactiveFormsModule,CommonModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DialogContentExampleDialog {
   readonly dialog = inject(MatDialog);
    
-  constructor(private authService:AuthService){}
-// users:User[]=[]
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
+
 ngOnInit(){
-  // this.signIn()
 }
+  // this.signIn()}
 // loginForm=this.fb.group({
 //   userName:[''],
 //   password:['']
 // })
 
-  signIn(userEmail:string,password:any){
-     this.authService.login(userEmail,password).subscribe({
-      next:(data:any)=>{
-        // this.users=data
-        console.log(userEmail,password)
-        console.log(data)
-        
+islogged=this.authService.isLoggedIn$
+
+  signIn(userEmail: string, password: any){
+    this.authService.login(userEmail, password).subscribe({
+      next: (data: any) => {
+        if (isPlatformBrowser(this.platformId)) {
+          localStorage.setItem('Token', 'Fake-token');
+          localStorage.setItem('UserCode', data.usercode);
+        }
+        console.log(data);
+        this.dialog.closeAll(); // إغلاق جميع الـ dialogs
+        this.router.navigateByUrl('/profile');
       },
-      error:(error)=>{
-        console.error(error)
+      error: (error) => {
+        console.error(error);
       }
-     })
+    });
   }
 
 
@@ -120,13 +143,17 @@ ngOnInit(){
   selector: 'dialog-content-example-dialogSignup',
   standalone: true,
   templateUrl: 'dialog-content-example-dialogSignup.html',
-  imports: [MatDialogModule, MatButtonModule, ReactiveFormsModule],
+  imports: [MatDialogModule, MatButtonModule, ReactiveFormsModule,CommonModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DialogContentExampleDialogSignup {
  
-
-  constructor(private authService:AuthService,private fb: FormBuilder){}
+  constructor(
+    private authService: AuthService,
+    private fb: FormBuilder,
+    private router: Router,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
   readonly dialog = inject(MatDialog);
 
   openDialog() {
@@ -141,19 +168,25 @@ registerForm=this.fb.group({
   userEmail:['',[Validators.required,Validators.email]],
   password:['',[Validators.required,Validators.maxLength(8)]]
 })
+islogged=this.authService.isLoggedIn$
 
-//credentials c=> form value
-  registerUser(credentials:any){
+  //credentials c=> form value
+  registerUser(credentials: any){
     this.authService.registerUser(credentials).subscribe({
-      next:(data:any)=>{
-        console.log("credentials: ",credentials)
-
-       console.log(data)
+      next: (data: any) => {
+        console.log("credentials: ", credentials);
+        if (isPlatformBrowser(this.platformId)) {
+          localStorage.setItem('User', data);
+          localStorage.setItem('Token', 'Fake-token');
+        }
+        console.log(data);
+        this.dialog.closeAll(); // إغلاق جميع الـ dialogs
+        this.router.navigateByUrl('/profile');
       },
-      error:(err:any)=> {
-        console.log(err)
+      error: (err: any) => {
+        console.log(err);
       },
-    })
+    });
   }
 
 }
