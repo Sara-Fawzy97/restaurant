@@ -4,6 +4,7 @@ import { RouterLink } from '@angular/router';
 import { CartService } from '../../shared/services/cart.service';
 import { CartItem } from '../../interfaces/CartItem';
 import { Subscription } from 'rxjs';
+import { OrderService } from '../../shared/services/order.service';
 
 @Component({
   selector: 'app-cart-page',
@@ -18,8 +19,14 @@ export class CartPageComponent implements OnInit, OnDestroy {
   totalItems: number = 0;
   totalPrice: number = 0;
   private cartSubscription?: Subscription;
+  restID:any=localStorage.getItem('RestId')
+  userKey:any=localStorage.getItem('UserCode')
 
-  constructor(private cartService: CartService) {}
+  order={
+    quantity:this.cartItems.find
+  }
+
+  constructor(private cartService: CartService, private orderService:OrderService) {}
 
   ngOnInit(): void {
     this.cartSubscription = this.cartService.getCart().subscribe(items => {
@@ -34,6 +41,26 @@ export class CartPageComponent implements OnInit, OnDestroy {
       this.cartSubscription.unsubscribe();
     }
   }
+
+body:any   //cartItems array which is sent to order
+
+  checkOut(){
+    this.body={
+      menuDTO : this.cartItems.map(item=>({
+          itemName:item.item.itemName,
+          quantity:item.quantity
+    }))}
+
+    this.orderService.makeOrder(this.restID,this.userKey,this.body.menuDTO).subscribe({
+      next:(data:any)=>{
+          console.log(data)
+      }}
+    )
+
+    this.cartService.clearCart()
+
+  }
+
 
   increaseQuantity(item: CartItem): void {
     if (!item || !item.item || item.item.itemID === undefined) {

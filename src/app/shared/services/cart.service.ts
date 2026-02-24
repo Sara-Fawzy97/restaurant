@@ -36,6 +36,10 @@ export class CartService {
 
    addToCart(menuItem: Menu, quantityAdded:number): void {
     // const cart = this.cartSubject.value;
+if(this.cartItems.find(i=>i.item.restaurantID !== menuItem.restaurantID)){
+   alert('can not add new a=item from another restaurant')
+   return;
+}
     const existingItem = this.cartItems.find(i => i.item.itemID === menuItem.itemID);
    console.log("existingItem",existingItem)
    console.log('menuItem',menuItem)
@@ -56,6 +60,7 @@ totalPrice:quantityAdded*(menuItem.itemPrice||0)});
 
     this.saveCartToLocalStorage();
   }
+
   removeFromCart(itemId: number): void {
     const cart = this.cartSubject.value.filter(item => item.item.itemID !== itemId);
     this.cartSubject.next(cart);

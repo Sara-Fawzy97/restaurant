@@ -202,7 +202,10 @@ private cartService:CartService
 
   addToCart(item: Menu, index: number): void {
     const quantity = this.getItemQuantity(item, index)
+
     this.cartService.addToCart(item,quantity)
+    localStorage.setItem('RestId',item.restaurantID?.toString()||'')
+    console.log(item.restaurantID)
     // console.log(quantity)
   }
 

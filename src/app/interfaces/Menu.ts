@@ -3,7 +3,7 @@ itemID?:number;
 itemName?:string;
 itemDescriptyion?:string;
 itemPrice?:any;
-restaurantID?:number;
+restaurantID?:string;
 restaurantName?:string;
 imageUrl?:any;
 quantity?:number

@@ -74,8 +74,10 @@
           </div>
         </div>
       </div>
-  
-      <a routerLink="/restaurants" class="text-[#ed3c0b] underline inline-block">Continue shopping</a>
+      <div class="flex justify-between">
+        <button (click)="checkOut()" class="text-white bg-[#ed3c0b] px-7 py-1 rounded hover:bg-[#ff7048]">Check Out</button>
+        <a routerLink="/restaurants" class="text-[#ed3c0b] underline inline-block">Continue shopping</a>  
+      </div>
     </div>
   </div>
   
