@@ -57,7 +57,7 @@ totalPrice:quantityAdded*(menuItem.itemPrice||0)});
     }
 
     this.getTotalPrice()
-
+this.cartSubject.next([...this.cartItems]);
     this.saveCartToLocalStorage();
   }
 
