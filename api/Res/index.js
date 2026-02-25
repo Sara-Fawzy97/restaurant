@@ -1,7 +1,7 @@
 export default async function handler(req, res) {
   try{
   const response = await fetch(
-    'https://fakerestaurantapi.runasp.net/api/Restaurant'
+    'https://fakerestaurantapi.runasp.net/api/restaurant'
   );
 
   const data = await response.json();

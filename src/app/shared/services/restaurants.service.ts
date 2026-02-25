@@ -9,7 +9,7 @@ import { Menu } from '../../interfaces/Menu';
 })
 export class RestaurantsService {
 
-  private apiUrl = '/api/Restaurant'; // شيلنا الجزء بتاع https...
+  private apiUrl = '/api/restaurant'; // شيلنا الجزء بتاع https...
   //  apiUrl = 'https://fakerestaurantapi.runasp.net/api/Restaurant'; // Adjust this to your actual API endpoint
   //                https://fakerestaurantapi.runasp.net/api/Restaurant?category=Parsi Cuisine
   constructor(private http: HttpClient) { }

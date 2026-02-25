@@ -7,7 +7,7 @@ import { Order } from '../../interfaces/Order';
   providedIn: 'root'
 })
 export class OrderService {
-  private apiUrl = '/api/Order';
+  private apiUrl = '/api/order';
 
   constructor(private http: HttpClient) { }
 

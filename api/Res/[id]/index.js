@@ -2,7 +2,7 @@ export default async function handler(req, res) {
     try{
     const { id } = req.query; // Vercel يمرر الـ params
     const response = await fetch(
-      `https://fakerestaurantapi.runasp.net/api/Restaurant/${id}`
+      `https://fakerestaurantapi.runasp.net/api/restaurant/${id}`
     );
   
     const data = await response.json();

@@ -7,7 +7,7 @@ import { isPlatformBrowser } from '@angular/common';
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = '/api/User';
+  private apiUrl = '/api/user';
 
   constructor(
     private http: HttpClient,
