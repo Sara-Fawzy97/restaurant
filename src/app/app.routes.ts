@@ -14,7 +14,7 @@ export const routes: Routes = [
     path: 'restaurants',
     component: AllRestaurantsComponent
   },
-  {path:'restaurant/:id/:category',
+  {path:'restaurant/:id',
   component: OneRestaurantComponent
   },
   {path:'cart',
