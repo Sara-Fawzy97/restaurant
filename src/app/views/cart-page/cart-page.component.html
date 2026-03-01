@@ -1,83 +1,137 @@
-<div class="p-6 max-w-4xl mx-auto">
-    <h2 class="text-2xl font-bold mb-4">Your Cart</h2>
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+
+    <!-- Title -->
+    <h2 class="text-2xl sm:text-3xl font-bold mb-8 text-gray-800">
+      Your Cart
+    </h2>
   
-    <div *ngIf="cartItems.length === 0" class="text-gray-600">
-      <p>Your cart is empty.</p>
-      <a routerLink="/restaurants" class="text-[#ed3c0b] underline mt-2 inline-block">Browse restaurants</a>
+    <!-- Empty State -->
+    <div *ngIf="cartItems.length === 0"
+         class="text-center py-16 bg-white rounded-2xl shadow">
+  
+      <p class="text-gray-500 mb-4">
+        Your cart is empty.
+      </p>
+  
+      <a routerLink="/restaurants"
+         class="text-[#ed3c0b] font-semibold underline">
+        Browse restaurants
+      </a>
     </div>
   
-    <div *ngIf="cartItems.length > 0" class="space-y-4">
-      <div class="bg-white rounded-lg shadow p-4">
-        <div class="flex justify-between items-center mb-3">
-          <div>
-            <p class="font-semibold">Total items: {{ totalItems }}</p>
-            <p class="font-semibold">Total price: {{ totalPrice | number:'1.2-2' }} $</p>
+    <!-- Cart Content -->
+    <div *ngIf="cartItems.length > 0" class="space-y-6">
+  
+      <!-- Summary Card -->
+      <div class="bg-white rounded-2xl shadow p-6">
+  
+        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+  
+          <div class="space-y-1">
+            <p class="font-semibold">
+              Total items: {{ totalItems }}
+            </p>
+            <p class="font-semibold text-[#ed3c0b]">
+              Total price: {{ totalPrice | number:'1.2-2' }} $
+            </p>
           </div>
+  
           <button
             (click)="clearCart()"
-            class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 text-sm"
-          >
+            class="bg-red-500 text-white px-5 py-2 rounded-md hover:bg-red-600 transition text-sm w-full sm:w-auto">
             Clear Cart
           </button>
+  
         </div>
   
-        <div *ngFor="let cartItem of cartItems" class="border-t pt-3 mt-3 first:border-t-0 first:pt-0 first:mt-0">
-          <div class="flex justify-between items-center" *ngIf="cartItem && cartItem.item">
-            <div>
-              <p class="font-semibold">{{ cartItem.item.itemName }}</p>
-              <p class="text-sm text-gray-600">
-                Price: {{ cartItem.item.itemPrice }} $
-              </p>
-            </div>
+        <!-- Items -->
+        <div class="mt-6 space-y-6">
   
-            <div class="flex items-center space-x-4">
-              <div class="flex items-center">
-                <button
-                  type="button"
-                  class="w-6 h-6 cursor-pointer border-none bg-transparent p-0 flex items-center justify-center"
-                  (click)="decreaseQuantity(cartItem)"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="w-full h-full">
-                    <path
-                      fill="#ed3c0b"
-                      d="M256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512zM168 232l176 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-176 0c-13.3 0-24-10.7-24-24s10.7-24 24-24z"
-                    />
-                  </svg>
-                </button>
-                <p class="mx-2 min-w-[20px] text-center">{{ cartItem.quantity }}</p>
-                <button
-                  type="button"
-                  class="w-6 h-6 cursor-pointer border-none bg-transparent p-0 flex items-center justify-center"
-                  (click)="increaseQuantity(cartItem)"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="w-full h-full">
-                    <path
-                      fill="#ed3c0b"
-                      d="M256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512zM232 344l0-64-64 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l64 0 0-64c0-13.3 10.7-24 24-24s24 10.7 24 24l0 64 64 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-64 0 0 64c0 13.3-10.7 24-24 24s-24-10.7-24-24z"
-                    />
-                  </svg>
-                </button>
-              </div>
+          <div *ngFor="let cartItem of cartItems"
+               class="border-t pt-6 first:border-t-0 first:pt-0">
   
-              <div class="text-right">
-                <p class="font-semibold">
-                  {{ cartItem.totalPrice || (cartItem.quantity * (cartItem.item.itemPrice || 0)) | number:'1.2-2' }} $
+            <div *ngIf="cartItem && cartItem.item"
+                 class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+  
+              <!-- Info -->
+              <div>
+                <p class="font-semibold text-gray-800">
+                  {{ cartItem.item.itemName }}
                 </p>
-                <button
-                  (click)="removeItem(cartItem)"
-                  class="text-xs text-red-500 hover:text-red-600 mt-1"
-                >
-                  Remove
-                </button>
+                <p class="text-sm text-gray-500">
+                  Price: {{ cartItem.item.itemPrice }} $
+                </p>
               </div>
+  
+              <!-- Controls -->
+              <div class="flex justify-between sm:justify-end items-center gap-6">
+  
+                <!-- Quantity -->
+                <div class="flex items-center border rounded-full px-3 py-1">
+  
+                  <button
+                    type="button"
+                    (click)="decreaseQuantity(cartItem)"
+                    class="text-[#ed3c0b] w-6 h-6 flex items-center justify-center">
+                    −
+                  </button>
+  
+                  <p class="mx-3 min-w-[20px] text-center font-medium">
+                    {{ cartItem.quantity }}
+                  </p>
+  
+                  <button
+                    type="button"
+                    (click)="increaseQuantity(cartItem)"
+                    class="text-[#ed3c0b] w-6 h-6 flex items-center justify-center">
+                    +
+                  </button>
+  
+                </div>
+  
+                <!-- Price -->
+                <div class="text-right min-w-[80px]">
+                  <p class="font-semibold text-gray-800">
+                    {{
+                      (cartItem.quantity * (cartItem.item.itemPrice || 0))
+                      | number:'1.2-2'
+                    }} $
+                  </p>
+  
+                  <button
+                    (click)="removeItem(cartItem)"
+                    class="text-xs text-red-500 hover:text-red-600 mt-1">
+                    Remove
+                  </button>
+                </div>
+  
+              </div>
+  
             </div>
+  
           </div>
+  
         </div>
+  
       </div>
-      <div class="flex justify-between">
-        <button (click)="checkOut()" class="text-white bg-[#ed3c0b] px-7 py-1 rounded hover:bg-[#ff7048]">Check Out</button>
-        <a routerLink="/restaurants" class="text-[#ed3c0b] underline inline-block">Continue shopping</a>  
+  
+      <!-- Bottom Buttons -->
+      <div class="flex flex-col sm:flex-row sm:justify-between gap-4">
+  
+        <button
+          (click)="checkOut()"
+          class="bg-[#ed3c0b] text-white px-8 py-2 rounded-md hover:bg-[#ff7048] transition w-full sm:w-auto">
+          Check Out
+        </button>
+  
+        <a routerLink="/restaurants"
+           class="text-[#ed3c0b] underline text-center sm:text-left">
+          Continue shopping
+        </a>
+  
       </div>
+  
     </div>
-  </div>
+  
+  </div>-->
   

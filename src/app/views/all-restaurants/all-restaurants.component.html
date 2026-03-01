@@ -1,66 +1,90 @@
-<section class="container mx-auto px-7 py-8">
-  <div class="mb-8">
-    <h1 class="text-4xl font-bold text-gray-800 mb-2">Discover Restaurants</h1>
-    <p class="text-gray-600">Discover all available restaurants</p>
+
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+
+  <!-- Header -->
+  <div class="mb-10 text-center sm:text-left">
+    <h1 class="text-3xl sm:text-4xl font-bold text-gray-800 mb-2">
+      Discover Restaurants
+    </h1>
+    <p class="text-gray-500 text-sm sm:text-base">
+      Discover all available restaurants
+    </p>
   </div>
 
-  <!-- Loading State -->
-  <!-- <div *ngIf="loading" class="text-center py-12">
-    <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-[#ed3c0b]"></div>
-    <p class="mt-4 text-gray-600">Loading restaurants...</p>
-  </div> -->
-
-  <!-- Error State -->
-  <!-- <div *ngIf="error && !loading" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-    <p>{{ error }}</p>
-  </div> -->
-
   <!-- Restaurants Grid -->
-  <div  class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-    <div *ngFor="let restaurant of paginatedRestaurants" 
-         class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 hover:shadow-[#ed3c0b]">
-      <div class="p-3 lg:p-6">
-        <h3 class="lg:text-lg text-base font-semibold text-gray-800 mb-2">{{ restaurant.restaurantName }}</h3>
-        
-        <div class="space-y-2 text-gray-600 h-24 text-[14px]">
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+
+    <div *ngFor="let restaurant of paginatedRestaurants"
+      class="bg-white rounded-2xl shadow-md hover:shadow-xl 
+             transition-all duration-300 hover:-translate-y-1 
+             flex flex-col">
+
+      <div class="p-5 flex flex-col flex-grow">
+
+        <!-- Title -->
+        <h3 class="text-lg font-semibold text-gray-800 mb-3 line-clamp-1">
+          {{ restaurant.restaurantName }}
+        </h3>
+
+        <!-- Info -->
+        <div class="space-y-2 text-gray-600 text-sm flex-grow">
+
           <p *ngIf="restaurant.address" class="flex items-center">
             <i class="fa-solid fa-location-dot mr-2 text-[#ed3c0b]"></i>
-            {{ restaurant.address }}
+            <span class="line-clamp-1">{{ restaurant.address }}</span>
           </p>
-          
+
           <p *ngIf="restaurant.type" class="flex items-center">
             <i class="fa-solid fa-utensils mr-2 text-[#ed3c0b]"></i>
             {{ restaurant.type }}
           </p>
-          
+
           <p *ngIf="restaurant.parkingLot !== undefined" class="flex items-center">
-            <i class="fa-solid fa-car mr-2 text-[#ed3c0b] "></i>
-            <span [class.text-green-600]="restaurant.parkingLot" [class.text-red-600]="!restaurant.parkingLot">
+            <i class="fa-solid fa-car mr-2 text-[#ed3c0b]"></i>
+            <span 
+              [class.text-green-600]="restaurant.parkingLot"
+              [class.text-red-600]="!restaurant.parkingLot">
               {{ restaurant.parkingLot ? 'Parking Available' : 'No Parking' }}
             </span>
           </p>
+
         </div>
 
-        <div class="mt-4 pt-4 border-t border-gray-100">
-          <a routerLink="/restaurant/{{restaurant.restaurantID}}" class="w-full bg-[#ed3c0b] text-white text-[14px] px-2 lg:px-12 py-2  rounded-md hover:bg-[#d6340a] transition-colors hover:scale-105">
+        <!-- Button -->
+        <div class="mt-6">
+          <a routerLink="/restaurant/{{restaurant.restaurantID}}"
+            class="block w-full text-center bg-[#ed3c0b] text-white text-sm 
+                   py-2 rounded-md hover:bg-[#d6340a] 
+                   transition duration-300">
             View Details
           </a>
         </div>
+
       </div>
     </div>
+
   </div>
-<mat-paginator [length]="restaurants.length"
-               [pageSize]="pageSize"
-               [pageSizeOptions]="[ 10,15, 20]"
-               aria-label="Select page"
-               (page)="handlePageEvent($event)">
-</mat-paginator>
+
+  <!-- Pagination -->
+  <div class="mt-10 flex justify-center">
+    <mat-paginator
+      [length]="restaurants.length"
+      [pageSize]="pageSize"
+      [pageSizeOptions]="[10,15,20]"
+      (page)="handlePageEvent($event)">
+    </mat-paginator>
+  </div>
 
   <!-- Empty State -->
-  <div *ngIf=" restaurants.length === 0" class="text-center py-12">
-    <i class="fa-solid fa-store text-6xl text-gray-300 mb-4"></i>
-    <p class="text-xl text-gray-600">No restaurants found</p>
+  <div *ngIf="restaurants.length === 0"
+       class="text-center py-16">
+
+    <i class="fa-solid fa-store text-6xl text-gray-300 mb-6"></i>
+
+    <p class="text-lg text-gray-500">
+      No restaurants found
+    </p>
+
   </div>
+
 </section>
-
-

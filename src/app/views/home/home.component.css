@@ -1,10 +1,10 @@
-section:first-of-type {
+/* section:first-of-type {
 background: url(/assets/landing-bg-dishes-min.jpg) no-repeat rgb(0, 0, 0,.5) ;
 height: 115%;
 background-size: cover;
 background-blend-mode: overlay;
 
-}
+} */
 
 h3::after{
     content: " ";
@@ -24,12 +24,12 @@ h3::before{
     display: inline-block;
 }
 
-.orders{
+/* .orders{
     background: url(/assets/food.webp) no-repeat ;
     background-size: cover ;
     background-position: center center;
-} 
-.otrders div:first-of-type{
+}  */
+.orders div:first-of-type{
     background: linear-gradient(360deg, rgba(0, 0, 0, 0) 56.18%, rgba(0, 0, 0, 0.5) 91.65%);
 }
 .orders div:last-of-type{
@@ -40,8 +40,8 @@ h3::before{
 }
 
 /********** mobile screen **************/
-@media screen and (max-width:425px) {
+/* @media screen and (max-width:425px) {
 section:first-of-type {
     height: 50%;
 }
-}
+} */

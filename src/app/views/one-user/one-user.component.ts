@@ -2,12 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { OrderService } from '../../shared/services/order.service';
 import { CommonModule } from '@angular/common';
 import { RestaurantsService } from '../../shared/services/restaurants.service';
+import { RouterLink } from "@angular/router";
 
 
 @Component({
   selector: 'app-one-user',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './one-user.component.html',
   styleUrl: './one-user.component.css'
 })
