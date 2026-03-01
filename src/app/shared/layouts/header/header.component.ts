@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, Inject, PLATFORM_ID } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatDialogRef } from '@angular/material/dialog';
 import { CartService } from '../../services/cart.service';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
@@ -95,21 +96,22 @@ export class DialogContentExampleDialog {
    
   constructor(
     private authService: AuthService,
-    private router: Router,
+    private router: Router, 
+    private dialogRef: MatDialogRef<DialogContentExampleDialogSignup>,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
 ngOnInit(){
 }
-  // this.signIn()}
-// loginForm=this.fb.group({
-//   userName:[''],
-//   password:['']
-// })
+ 
 
+errorMsg:string=' '
 islogged=this.authService.isLoggedIn$
 
   signIn(userEmail: string, password: any){
+    if (!userEmail || !password) return;
+
+  // if (this.loginForm.invalid) return;
     this.authService.login(userEmail, password).subscribe({
       next: (data: any) => {
         if (isPlatformBrowser(this.platformId)) {
@@ -117,11 +119,16 @@ islogged=this.authService.isLoggedIn$
           localStorage.setItem('UserCode', data.usercode);
         }
         console.log(data);
-        this.dialog.closeAll(); // إغلاق جميع الـ dialogs
-        this.router.navigateByUrl('/profile');
+        this.dialogRef.close(); // إغلاق جميع الـ dialogs
+        this.router.navigate(['/profile']);
       },
       error: (error) => {
         console.error(error);
+        if (error.error?.message === 'invalid Details') {
+          this.errorMsg = "Check your email and password!";
+        } else {
+          this.errorMsg = "Something went wrong, please try again.";
+        }
       }
     });
   }
@@ -144,7 +151,7 @@ islogged=this.authService.isLoggedIn$
   standalone: true,
   templateUrl: 'dialog-content-example-dialogSignup.html',
   imports: [MatDialogModule, MatButtonModule, ReactiveFormsModule,CommonModule],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  // changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DialogContentExampleDialogSignup {
  
@@ -152,6 +159,7 @@ export class DialogContentExampleDialogSignup {
     private authService: AuthService,
     private fb: FormBuilder,
     private router: Router,
+    private dialogRef: MatDialogRef<DialogContentExampleDialogSignup>,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {}
   readonly dialog = inject(MatDialog);
@@ -166,25 +174,31 @@ export class DialogContentExampleDialogSignup {
 
 registerForm=this.fb.group({
   userEmail:['',[Validators.required,Validators.email]],
-  password:['',[Validators.required,Validators.maxLength(8)]]
+  password:['',[Validators.required,Validators.minLength(8)]]
 })
 islogged=this.authService.isLoggedIn$
 
   //credentials c=> form value
   registerUser(credentials: any){
+    if (this.registerForm.invalid) return;
+
     this.authService.registerUser(credentials).subscribe({
       next: (data: any) => {
+        
         console.log("credentials: ", credentials);
         if (isPlatformBrowser(this.platformId)) {
-          localStorage.setItem('User', data);
+          localStorage.setItem('UserCode', data.usercode);
           localStorage.setItem('Token', 'Fake-token');
         }
         console.log(data);
         this.dialog.closeAll(); // إغلاق جميع الـ dialogs
-        this.router.navigateByUrl('/profile');
+        this.router.navigate(['/profile']);
       },
       error: (err: any) => {
         console.log(err);
+        if (err.error?.message === 'user already exists') {
+          this.registerForm.get('userEmail')?.setErrors({ emailExists: true });
+        }
       },
     });
   }

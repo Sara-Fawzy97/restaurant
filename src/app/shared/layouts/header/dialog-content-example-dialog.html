@@ -1,18 +1,70 @@
-<section *ngIf="!(islogged|async)" class=" box-border rounded-lg p-4 md:p-8 w-64 md:w-96 text-[14px]">
-<a href="/" class="items-center"><img src="./assets/newLogo.svg" alt="elmenues logo" class="w-32 mx-auto "></a>
+<section 
+         class="w-full max-w-md mx-auto bg-white rounded-xl p-6 md:p-8 text-sm">
 
-<h2 mat-dialog-title class="text-gray-400">Log In</h2>
+  <!-- Logo -->
+  <div class="text-center mb-4">
+    <a href="/">
+      <img src="./assets/newLogo.svg" alt="elmenues logo" class="w-28 mx-auto">
+    </a>
+    <h2 class="text-gray-500 text-lg font-medium mt-1">Log In</h2>
+  </div>
 
-<mat-dialog-content class="mat-typography">
- <form #logInForm="ngForm" (ngSubmit)="signIn(logInForm.value.email,logInForm.value.password)" #log class="text-[14px] ">
-    <input ngModel #userEmail="ngModel" email type="text" placeholder="email" id="email" name="email" class="w-full h-8 border border-gray-300 rounded-md pl-3 focus:border-[#ed3c0b]"><br>
-    <input ngModel #password="ngModel" type="password" placeholder="password" id="password" name="password" class="w-full h-8 border border-gray-300 rounded-md pl-3 focus:border-[#ed3c0b] mt-2" ><br>
-<button type="submit" class="text-[#ed3c0b] border border-[#ed3c0b] rounded-md mt-2 p-1" >Login</button>
- </form>
-</mat-dialog-content>
+  <!-- Login Form -->
+  <form #logInForm="ngForm" 
+        (ngSubmit)="signIn(logInForm.value.email, logInForm.value.password)"
+        class="space-y-4">
 
-<mat-dialog-actions align="end" class="gap-2">
-  <button matButton mat-dialog-close>Cancel</button>
-  <button matButton mat-dialog-close (click)="openDialogSignup()" class="bg-[#ed3c0b] text-white rounded-md p-2">Create an account</button>
-</mat-dialog-actions>
+    <!-- Email -->
+    <div>
+      <input ngModel 
+             name="email" 
+             #email="ngModel" 
+             type="email" 
+             placeholder="Email"
+             required
+             email
+             class="w-full h-11 px-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#ed3c0b]">
+      <p *ngIf="email.invalid && email.touched" class="text-red-500 text-xs mt-1">
+        <span *ngIf="email.errors?.['required']">Email is required</span>
+        <span *ngIf="email.errors?.['email']">Invalid email format</span>
+      </p>
+     
+    </div>
+
+    <!-- Password -->
+    <div>
+      <input ngModel 
+             name="password" 
+             #password="ngModel" 
+             type="password" 
+             placeholder="Password"
+             required
+             minlength="8"
+             class="w-full h-11 px-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#ed3c0b]">
+      <p *ngIf="password.invalid && password.touched" class="text-red-500 text-xs mt-1">
+        <span *ngIf="password.errors?.['required']">Password is required</span>
+        <span *ngIf="password.errors?.['minlength']">Password must be at least 8 characters</span>
+      </p>
+    </div>
+   
+  <p *ngIf="errorMsg" class="text-red-500 text-xs mt-1">{{ errorMsg }}</p>
+
+    <!-- Submit -->
+    <button type="submit" 
+            [disabled]="logInForm.invalid"
+            class="w-full h-11 bg-[#ed3c0b] text-white rounded-md hover:bg-[#d6340a] transition disabled:opacity-50">
+      Login
+    </button>
+
+  </form>
+
+  <!-- Links -->
+  <div class="flex justify-between mt-4 text-sm">
+    <button mat-button mat-dialog-close class="text-gray-500">Cancel</button>
+    <button  (click)="openDialogSignup()" 
+            class=" text-white  bg-[#ed3c0b] px-3 py-1 rounded-md hover:bg-[#d6340a] ">
+      Create an account
+    </button>
+  </div>
+
 </section>

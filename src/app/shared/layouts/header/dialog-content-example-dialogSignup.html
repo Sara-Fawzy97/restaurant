@@ -1,20 +1,95 @@
-<section *ngIf="!(islogged|async)"  class="rounded-lg p-4 md:p-8 w-80 md:w-96 text-[14px]">
-    <a href="/" class="items-center"><img src="./assets/newLogo.svg" alt="elmenues logo" class="w-32  "></a>
-    
-    <h2 mat-dialog-title class="text-gray-400 ">Create new account</h2>
-    
-    <mat-dialog-content  class="mat-typography">
-     <form [formGroup]="registerForm" (ngSubmit)="registerUser(registerForm.value)" class="text-[14px] ">
-        <input formControlName="userEmail" type="email" placeholder="email" id="email" name="userEmail" class="w-full h-8 border border-gray-300 rounded-md pl-3 focus:border-[#ed3c0b]"><br>
-        <!-- <input ngModel #name="ngModel" type="text" placeholder="name" id="name" name="name" class="w-full h-8 border border-gray-300 rounded-md pl-3 focus:border-[#ed3c0b] mt-2"><br> -->
-        <input  formControlName="password"  type="password" placeholder="password" id="password" name="password" class="w-full h-8 border border-gray-300 rounded-md pl-3 focus:border-[#ed3c0b] mt-2" ><br>
-   <a matbutton mat-dialog-close (click)="openDialog()" class="text-[12px]">Already have an account!</a> <br>
-        <button type="submit" class="text-[#ed3c0b] border border-[#ed3c0b] rounded-md mt-2 p-1" >Sign up</button>
-     </form> 
-    </mat-dialog-content>
-    
-    <mat-dialog-actions align="end" class="gap-2">
-      <button matButton  mat-dialog-close >Cancel</button>
-  
-    </mat-dialog-actions>
-    </section>
+<section  
+  class="w-full max-w-md mx-auto bg-white rounded-xl p-6 md:p-8 text-sm  sm:p-6  shadow-lg">
+
+  <div class="text-center">
+    <a href="/">
+      <img src="./assets/newLogo.svg" 
+           alt="logo" 
+           class="w-24 sm:w-28 mx-auto mb-4">
+    </a>
+
+    <h2 class="text-gray-500 text-lg font-medium m-1">
+      Create new account
+    </h2>
+  </div>
+
+  <form [formGroup]="registerForm"
+        (ngSubmit)="registerUser(registerForm.value)"
+        class="mt-6 space-y-4">
+
+    <!-- Email -->
+    <div>
+      <input 
+        formControlName="userEmail"
+        type="email"
+        placeholder="Email"
+        class="w-full h-11 px-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#ed3c0b]">
+
+      <p *ngIf="registerForm.get('userEmail')?.touched 
+                && registerForm.get('userEmail')?.invalid"
+         class="text-red-500 text-xs mt-1">
+
+        <span *ngIf="registerForm.get('userEmail')?.errors?.['required']">
+          Email is required
+        </span>
+
+        <span *ngIf="registerForm.get('userEmail')?.errors?.['email']">
+          Invalid email format
+        </span>
+
+        <span *ngIf="registerForm.get('userEmail')?.errors?.['emailExists']">
+          This email already exists
+        </span>
+      </p>
+    </div>
+
+    <!-- Password -->
+    <div>
+      <input 
+        formControlName="password"
+        type="password"
+        placeholder="Password"
+        class="w-full h-11 px-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#ed3c0b]">
+
+      <p *ngIf="registerForm.get('password')?.touched 
+                && registerForm.get('password')?.invalid"
+         class="text-red-500 text-xs mt-1">
+
+        <span *ngIf="registerForm.get('password')?.errors?.['required']">
+          Password is required
+        </span>
+
+        <span *ngIf="registerForm.get('password')?.errors?.['minlength']">
+          Password must be at least 8 characters
+        </span>
+
+      </p>
+    </div>
+
+    <!-- Already have account -->
+    <div class="text-right">
+      <a mat-dialog-close
+         (click)="openDialog()"
+         class="text-xs text-[#ed3c0b] cursor-pointer hover:underline">
+        Already have an account?
+      </a>
+    </div>
+
+    <!-- Submit -->
+    <button type="submit"
+      [disabled]="registerForm.invalid"
+      class="w-full h-11 bg-[#ed3c0b] text-white rounded-md 
+             hover:bg-[#d6340a] transition disabled:opacity-50">
+
+      Sign Up
+    </button>
+
+  </form>
+
+  <div class="mt-4 text-right">
+    <button mat-button mat-dialog-close class="text-sm">
+      Cancel
+    </button>
+  </div>
+
+</section>
