@@ -1,27 +1,56 @@
-# Restaurant
+# Restaurant Web App (elmenus.com)
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.11.
+A responsive web application built with Angular that allows users to explore restaurants, view their menus, and place orders online. The app uses a REST API for restaurant data and integrates modern UI tools for a smooth user experience.
 
-## Development server
+## Features
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+* Browse a list of restaurants.
 
-## Code scaffolding
+* View restaurant details including type, address, and parking availability.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+* Explore restaurant menus and add items to your cart.
 
-## Build
+* Place orders and see your order details.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+* Responsive design for mobile, tablet, and desktop.
 
-## Running unit tests
+* User authentication with sign up and login forms.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+* Validation for forms including email format and password length.
 
-## Running end-to-end tests
+* Interactive UI using Tailwind CSS, Angular Material, and Font Awesome icons.
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+## Tech Stack
 
-## Further help
+- Frontend: Angular
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+- Styling: Tailwind CSS, Angular Material
+
+- Icons: Font Awesome
+
+- API: Fake Restaurant API
+
+## Usage
+
+* Browse restaurants on the home page.
+
+* Click on a restaurant to view its menu.
+
+* Add items to your cart and place an order.
+
+* Use the sign up or login forms to manage your user account.
+
+## Validation & Feedback
+
+- Email must be in a valid format.
+
+- Password must be at least 8 characters.
+
+- Users are informed if an email already exists during registration.
+
+- Login errors show messages for invalid credentials.
+
+## Contributing
+
+ Contributions are welcome! Please fork the repository and submit a pull request.
+ This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.11.
